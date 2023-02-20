@@ -1,45 +1,35 @@
 import java.util.*;
 import java.io.*;
 public class Main {
-	static int N, r, c, ans;
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
+	static int N,r,c, ans;
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		r = Integer.parseInt(st.nextToken());
 		c = Integer.parseInt(st.nextToken());
-		//orders = new int[l][l];
-		findVisitOrder(N, 0);
+		divide(0,0,N,0);
+		
 		System.out.println(ans);
 	}
-	public static void findVisitOrder(int n, int order) {
-		if(n == 0) {
+	public static void divide(int rr, int cc, int n, int order) {
+		if(rr == r && cc == c) {
 			ans = order;
-			//System.out.println(cr+" "+cc + " "+order );
 			return;
 		}
-		int cnt = 1<< (2*(n-1));
-		int jmp = 1<< (n-1);
-		//System.out.println(cnt+" "+jmp);
-		if(r >= jmp) {
-			r -= jmp;
-			if(c >= jmp) {
-				c -= jmp;
-				//System.out.println(order+cnt*3);
-				findVisitOrder(n-1, order+cnt*3);
+		int length = 1 << (n-1);
+		int cnt = length*length;
+		if(r < rr+length) {
+			if(c < cc+length) {
+				divide(rr, cc, n-1, order);
 			}else {
-				//System.out.println(order+cnt*2);
-				findVisitOrder(n-1, order+cnt*2);
+				divide(rr, cc+length, n-1, order+cnt);
 			}
 		}else {
-			if(c >= jmp) {
-				c -= jmp;
-				//System.out.println(order+cnt*1);
-				findVisitOrder(n-1, order+cnt*1);
+			if(c < cc+length) {
+				divide(rr+length, cc, n-1, order+cnt*2);
 			}else {
-				//System.out.println(order);
-				findVisitOrder(n-1, order);
+				divide(rr+length, cc+length, n-1, order+cnt*3);
 			}
 		}
 	}
