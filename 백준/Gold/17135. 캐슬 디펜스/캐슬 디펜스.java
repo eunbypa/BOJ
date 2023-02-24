@@ -55,7 +55,7 @@ public class Main {
 		boolean[] find = new boolean[3];
 		while(eCnt != 0) {
 			for (int i = 0; i < 3; i++) {
-				find[i] = bfs(i); // 다음에 공격할 적 파악
+				find[i] = findTarget(i); // 다음에 공격할 적 파악
 				//System.out.println(targets[i][0]+" "+targets[i][1]);
 			}
 			for (int i = 0; i < 3; i++) {
@@ -87,29 +87,30 @@ public class Main {
 		}
 		return cnt;
 	}
-	public static boolean bfs(int idx) {
-		Queue<int[]> q = new LinkedList<>();
-		q.offer(new int[] {N,archer[idx]});
-		boolean[][] visited = new boolean[N][M];
-		while(!q.isEmpty()) {
-			int[] loc = q.poll();
-			for (int i = 0; i < 4; i++) {
-				int nr = loc[0]+dr[i];
-				int nc = loc[1]+dc[i];
-				if(!check(nr,nc)) continue;
-				if(visited[nr][nc]) continue;
-				visited[nr][nc] = true;
-				q.offer(new int[] {nr,nc});
-				int dist = Math.abs(nr-N)+Math.abs(nc-archer[idx]);
-				if(dist <= D && copy[nr][nc] == 1) {
-					targets[idx][0] = nr;
-					targets[idx][1] = nc;
-					//System.out.println(nr+" "+nc+" "+D);
-					return true;
+	public static boolean findTarget(int idx) {
+		int length = 0;
+		int min = 1000;
+		boolean find = false;
+		//int[] target = new int[] {-1,-1};
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if(copy[i][j] == 0) continue;
+				length = Math.abs(N-i)+Math.abs(j-archer[idx]);
+				if(length <= D && min > length) {
+					min = length;
+					find = true;
+					targets[idx][0] = i;
+					targets[idx][1] = j;
+				}else if(min == length) {
+					if(j < targets[idx][1]) {
+						targets[idx][0] = i;
+						targets[idx][1] = j;
+					}
 				}
 			}
 		}
-		return false;
+		if(!find) return false;
+		else return true;
 	}
 	public static boolean check(int r, int c) {
 		return r >= 0 && c >= 0 && r < N && c < M;
