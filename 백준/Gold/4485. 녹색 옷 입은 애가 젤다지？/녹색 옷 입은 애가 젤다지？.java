@@ -3,7 +3,7 @@ import java.io.*;
 public class Main {
 	static int N, min = 400000;
 	static int[][] map;
-	static int[] dist;
+	static int[][] dist;
 	static int[] dr = {-1,0,1,0};
 	static int[] dc = {0,-1,0,1};
 	public static void main(String[] args) throws IOException {
@@ -15,17 +15,17 @@ public class Main {
 		int t = 1;
 		do {
 			map = new int[N][N];
-			dist = new int[N*N];
+			dist = new int[N][N];
 			min = 400000;
 			for (int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < N; j++) {
 					map[i][j] = Integer.parseInt(st.nextToken());
-					dist[i*N+j] = min;
+					dist[i][j] = min;
 				}
 			}
 			dijkstra();
-			sb.append("Problem " + t+": "+dist[N*N-1]+"\n");
+			sb.append("Problem " + t+": "+dist[N-1][N-1]+"\n");
 			t++;
 			N = Integer.parseInt(br.readLine());
 		}while(N != 0);
@@ -34,16 +34,20 @@ public class Main {
 	private static void dijkstra() {
 		PriorityQueue<int[]> pq = new PriorityQueue<>((o1,o2)->(o1[2]-o2[2]));
 		pq.offer(new int[] {0,0, map[0][0]});
-		dist[0] = map[0][0];
+		dist[0][0] = map[0][0];
 		while(!pq.isEmpty()) {
 			int[] cur = pq.poll();
+			int r = cur[0];
+			int c = cur[1];
+			int cnt = cur[2];
+			if(dist[r][c] < cnt) continue;
 			for (int i = 0; i < 4; i++) {
-				int nr = cur[0]+dr[i];
-				int nc = cur[1]+dc[i];
+				int nr = r+dr[i];
+				int nc = c+dc[i];
 				if(!check(nr,nc)) continue;
-				if(dist[nr*N+nc] > dist[cur[0]*N+cur[1]] + map[nr][nc]) {
-					dist[nr*N+nc] =  dist[cur[0]*N+cur[1]] + map[nr][nc];
-					pq.offer(new int[] {nr,nc,map[nr][nc]});
+				if(dist[nr][nc] > cnt + map[nr][nc]) {
+					dist[nr][nc] =  cnt + map[nr][nc];
+					pq.offer(new int[] {nr,nc,dist[nr][nc]});
 				}
 			}
 		}
