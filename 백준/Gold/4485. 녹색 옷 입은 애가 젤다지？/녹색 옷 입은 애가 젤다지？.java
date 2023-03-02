@@ -17,11 +17,11 @@ public class Main {
 			map = new int[N][N];
 			dist = new int[N][N];
 			min = 400000;
-			for (int i = 0; i < N; i++) {
-				st = new StringTokenizer(br.readLine());
-				for (int j = 0; j < N; j++) {
-					map[i][j] = Integer.parseInt(st.nextToken());
-					dist[i][j] = min;
+			for (int i = 0; i <N; i++) {
+				String str = br.readLine();
+				for (int j = 0, index = 0; j < N; j++, index+=2) {
+					map[i][j] = str.charAt(index)-'0';
+					dist[i][j] = Integer.MAX_VALUE;
 				}
 			}
 			dijkstra();
@@ -40,7 +40,7 @@ public class Main {
 			int r = cur[0];
 			int c = cur[1];
 			int cnt = cur[2];
-			if(dist[r][c] < cnt) continue;
+			//if(dist[r][c] < cnt) continue;
 			for (int i = 0; i < 4; i++) {
 				int nr = r+dr[i];
 				int nc = c+dc[i];
@@ -52,9 +52,8 @@ public class Main {
 			}
 		}
 	}
-	private static boolean check(int nr, int nc) {
+    private static boolean check(int nr, int nc) {
 		// TODO Auto-generated method stub
 		return nr>=0 && nc >=0 && nr < N && nc < N;
-	}
-	
+    }
 }
