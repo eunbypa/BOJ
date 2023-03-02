@@ -27,7 +27,7 @@ public class Main {
 					return o1[2]-o2[2];
 				}
 			});
-			pq.add(new int[] {0,0, map[0][0]});
+			pq.offer(new int[] {0,0, map[0][0]});
 			dist[0][0] = map[0][0];
 			while(!pq.isEmpty()) {
 				int[] cur = pq.poll();
@@ -41,7 +41,7 @@ public class Main {
 					if(nr>=0 && nc >=0 && nr<N && nc <N 
 							&&  cnt+map[nr][nc]<dist[nr][nc]) {
 						dist[nr][nc] =  cnt + map[nr][nc];
-						pq.add(new int[] {nr,nc,dist[nr][nc]});
+						pq.offer(new int[] {nr,nc,dist[nr][nc]});
 					}
 				}
 			}
