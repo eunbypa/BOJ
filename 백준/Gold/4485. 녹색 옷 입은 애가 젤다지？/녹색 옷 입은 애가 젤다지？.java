@@ -1,15 +1,18 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 public class Main {
 	static int N, min = 400000;
 	static int[][] map;
 	static int[][] dist;
 	static int[] dr = {-1,0,1,0};
 	static int[] dc = {0,-1,0,1};
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
 		N = Integer.parseInt(br.readLine());
 		int t = 1;
@@ -40,7 +43,7 @@ public class Main {
 			int r = cur[0];
 			int c = cur[1];
 			int cnt = cur[2];
-			//if(dist[r][c] < cnt) continue;
+			if(dist[r][c] < cnt) continue;
 			for (int i = 0; i < 4; i++) {
 				int nr = r+dr[i];
 				int nc = c+dc[i];
@@ -52,8 +55,9 @@ public class Main {
 			}
 		}
 	}
-    private static boolean check(int nr, int nc) {
+	private static boolean check(int nr, int nc) {
 		// TODO Auto-generated method stub
 		return nr>=0 && nc >=0 && nr < N && nc < N;
-    }
+	}
+	
 }
