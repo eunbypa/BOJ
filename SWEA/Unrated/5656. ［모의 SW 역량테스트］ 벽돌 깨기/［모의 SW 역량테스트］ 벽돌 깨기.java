@@ -4,7 +4,6 @@ import java.io.*;
 public class Solution {
     static int N, W, H, tot, min = 300;
     static int[][] map;
-    static int[][] copy;
     static int[] selected;
     static int[] dr = {-1,0,1,0};
     static int[] dc = {0,-1,0,1};
@@ -23,7 +22,6 @@ public class Solution {
             W = Integer.parseInt(st.nextToken());
             H = Integer.parseInt(st.nextToken());
             map = new int[H][W];
-            copy = new int[H][];
             selected = new int[N];
             for (int i = 0; i < H; i++) {
                 st = new StringTokenizer(br.readLine());
@@ -42,6 +40,7 @@ public class Solution {
         if(min == 0) return; // 프루닝
         if(cnt == N) {
             int r = 0, c = 0, sum = 0;
+            int[][] copy =  new int[H][W];
             for (int i = 0; i < H; i++) {
                 copy[i] = Arrays.copyOf(map[i], W);
             }
@@ -52,7 +51,7 @@ public class Solution {
                     r++;
                 }
                 if(r == H) continue; // 벽돌이 아예 없는 열
-                sum+=deleteBlock(r,c);
+                sum+=deleteBlock(r,c,copy);
             }
             min = Math.min(min, tot-sum);
             return;
@@ -64,7 +63,7 @@ public class Solution {
         }
     }
     //벽돌깨기 시작 bfs
-    static int deleteBlock(int r, int c) {
+    static int deleteBlock(int r, int c, int[][] copy) {
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[] {r,c,copy[r][c]});
         copy[r][c] = 0;
