@@ -23,7 +23,7 @@ public class Solution {
             W = Integer.parseInt(st.nextToken());
             H = Integer.parseInt(st.nextToken());
             map = new int[H][W];
-            copy = new int[H][];
+            copy = new int[H][W];
             selected = new int[N];
             for (int i = 0; i < H; i++) {
                 st = new StringTokenizer(br.readLine());
@@ -43,7 +43,9 @@ public class Solution {
         if(cnt == N) {
             int r = 0, c = 0, sum = 0;
             for (int i = 0; i < H; i++) {
-                copy[i] = Arrays.copyOf(map[i], W);
+                for (int j = 0; j < W; j++) {
+                	copy[i][j] = map[i][j];
+                }
             }
             for (int i = 0; i < N; i++) {
                 r = 0;
