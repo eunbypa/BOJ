@@ -40,6 +40,7 @@ public class Solution {
 	}
 	//W 개에서 N개를 중복으로 뽑는 중복순열
 	static void dfs(int cnt) {
+        if(min == 0) return; // 프루닝
 		if(cnt == N) {
 			//System.out.println(Arrays.toString(selected));
 			int r = 0, c = 0, sum = 0;
@@ -85,37 +86,28 @@ public class Solution {
 	}
 	//벽돌깨기 시작 bfs
 	static int deleteBlock(int r, int c) {
-		List<int[]> deleted = new ArrayList<>(); // 깨부순 블록 위치 저장
 		Queue<int[]> q = new LinkedList<>();
 		boolean[][] visited = new boolean[H][W];
-		deleted.add(new int[] {r,c});
-		q.offer(new int[] {r,c});
+		q.offer(new int[] {r,c,copy[r][c]});
+        copy[r][c] = 0;
 		visited[r][c] = true;
-		/*if(selected[0] == 9 && selected[1] == 2 &&selected[2] == 9 ) {
-			System.out.println(r+" "+c);
-		}*/
+        int cnt = 1;
 		while(!q.isEmpty()) {
 			int[] cur = q.poll();
 			for (int i = 0; i < 4; i++) {
 				int nr = cur[0], nc = cur[1];
-				int length = copy[cur[0]][cur[1]];
+				int length = cur[2];
 				for (int j = 0; j < length-1; j++) {
 					nr += dr[i];
 					nc += dc[i];
 					if(nr >= 0 && nc >= 0 && nr < H && nc < W && !visited[nr][nc] && copy[nr][nc] != 0) {
 						visited[nr][nc] = true;
-						q.offer(new int[] {nr,nc});
-						deleted.add(new int[] {nr,nc});
+						q.offer(new int[] {nr,nc,copy[nr][nc]});
+                        copy[nr][nc] = 0;
+                        cnt++;
 					}
 				}
 			}
-		}
-		/*if(selected[0] == 9 && selected[1] == 2 &&selected[2] == 9 ) {
-			System.out.println(deleted.size());
-		}*/
-		for (int i = 0; i < deleted.size(); i++) {
-			int[] loc = deleted.get(i);
-			copy[loc[0]][loc[1]] = 0;
 		}
 		for (int i = 0; i < W; i++) {
 			int j = H-1;
@@ -137,6 +129,6 @@ public class Solution {
 				j--;
 			}
 		}
-		return deleted.size();
+		return cnt;
 	}
 }
