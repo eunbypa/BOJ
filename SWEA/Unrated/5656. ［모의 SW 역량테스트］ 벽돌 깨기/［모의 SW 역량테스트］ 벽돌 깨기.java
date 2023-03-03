@@ -68,12 +68,14 @@ public class Solution {
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[] {r,c,copy[r][c]});
         copy[r][c] = 0;
-        int cnt = 1;
+        int nr,nc,length,cnt = 1;
+        int[] cur;
         while(!q.isEmpty()) {
-            int[] cur = q.poll();
+            cur = q.poll();
             for (int i = 0; i < 4; i++) {
-                int nr = cur[0], nc = cur[1];
-                int length = cur[2];
+                nr = cur[0];
+                nc = cur[1];
+                length = cur[2];
                 for (int j = 0; j < length-1; j++) {
                     nr += dr[i];
                     nc += dc[i];
@@ -85,20 +87,21 @@ public class Solution {
                 }
             }
         }
+        int j, idx, tmp;
         for (int i = 0; i < W; i++) {
-            int j = H-1;
-            int idx = H-1;
+            j = H-1;
+            idx = H-1;
             while(j >= 0) {
                 if(copy[j][i] == 0) {
                     while(j >= 0 && copy[j][i] == 0) {
                         j--;
                     }
                     if(j < 0) break;
-                    int tmp = copy[j][i];
+                    tmp = copy[j][i];
                     copy[j][i] = 0;
                     copy[idx--][i] = tmp;
                 }else {
-                    int tmp = copy[j][i];
+                    tmp = copy[j][i];
                     copy[j][i] = 0;
                     copy[idx--][i] = tmp;
                 }
