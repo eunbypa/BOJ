@@ -17,6 +17,7 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 1; j <= N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
+				Arrays.fill(dp[i][j], -1);
 			}
 		}
 		//파이프 초기 위치
@@ -26,7 +27,7 @@ public class Main {
 	}
 	static int dfs(int r, int c, int d) {
 		//System.out.println(r+" "+c);
-		if(dp[r][c][d] != 0) return dp[r][c][d];
+		if(dp[r][c][d] != -1) return dp[r][c][d];
 		if(d == 0) { //가로인경우
 			for (int i = 0; i < 3; i++) {
 				if(i == 1) continue;
@@ -38,6 +39,7 @@ public class Main {
 				}else {
 					if(map[nr][nc] == 1) continue; // 벽
 				}
+				if(dp[r][c][d] == -1) dp[r][c][d] = 0;
 				dp[r][c][d] += dfs(nr,nc,i);
 			} 
 		}else if(d==1) { // 세로인경우
@@ -51,6 +53,7 @@ public class Main {
 				}else {
 					if(map[nr][nc] == 1) continue; // 벽
 				}
+				if(dp[r][c][d] == -1) dp[r][c][d] = 0;
 				dp[r][c][d] += dfs(nr,nc,i);
 			} 
 		}else { // 대각선인경우
@@ -63,10 +66,14 @@ public class Main {
 				}else {
 					if(map[nr][nc] == 1) continue; // 벽
 				}
+				if(dp[r][c][d] == -1) dp[r][c][d] = 0;
 				dp[r][c][d] += dfs(nr,nc,i);
 			} 
 		}
 		if(r==N && c == N) return 1; // 도착
+		if(dp[r][c][d] == -1) { // 도착 불가능을 의미
+			dp[r][c][d] = 0;
+		}
 		return dp[r][c][d];
 	}
 	static boolean check(int x, int y) {
