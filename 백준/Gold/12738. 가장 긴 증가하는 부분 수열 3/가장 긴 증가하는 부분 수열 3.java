@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 public class Main {
-	static int[] arr, arr2, record;
+	static int[] arr, arr2;
 	static int n,max, last;
 	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
@@ -10,7 +10,6 @@ public class Main {
 		n = Integer.parseInt(br.readLine());
 		arr = new int[n];
 		arr2 = new int[n];
-		record = new int[n];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < n; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
@@ -23,7 +22,6 @@ public class Main {
 		for (int i = 0; i < n; i++) {
 			if(last == 0) {
 				arr2[0] = arr[i];
-				record[i] = 0;
 				last++;
 				continue;
 			}
@@ -32,7 +30,6 @@ public class Main {
 				idx = -(idx);
 			}
 			arr2[idx] = arr[i];
-			record[i] = idx;
 			if(idx == last) {
 				last++;
 			}
