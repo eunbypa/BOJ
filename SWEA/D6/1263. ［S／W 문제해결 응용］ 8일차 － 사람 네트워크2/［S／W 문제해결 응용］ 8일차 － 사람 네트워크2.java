@@ -49,6 +49,7 @@ public class Solution {
 			for (int j = 0; j < N; j++) {
 				if(i==j) continue;
 				sum+=dp[i][j];
+                if(sum >= min) break;
 			}
 			min = Math.min(min,sum);
 		}
