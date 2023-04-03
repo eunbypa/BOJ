@@ -2,11 +2,11 @@ import java.util.*;
 import java.io.*;
 public class Solution {
 	static int N,min;
-	static int[][] edge;
 	static int[][] dp;
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		int T;
 		T=Integer.parseInt(br.readLine());
 		StringBuilder sb = new StringBuilder();
@@ -26,9 +26,12 @@ public class Solution {
 			}
 			floidWashall();
 			min = findMinCC();
-			sb.append("#"+test_case+" "+min+"\n");
+			sb.append("#").append(test_case).append(" ")
+            .append(min).append("\n");
 		}
-		System.out.println(sb.toString());
+		bw.write(sb.toString());
+        bw.flush();
+        bw.close();
 	}
 	static void floidWashall() {
 		for (int k = 0; k< N;k++) {
@@ -49,7 +52,6 @@ public class Solution {
 			for (int j = 0; j < N; j++) {
 				if(i==j) continue;
 				sum+=dp[i][j];
-                if(sum >= min) break;
 			}
 			min = Math.min(min,sum);
 		}
