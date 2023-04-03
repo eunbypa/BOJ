@@ -20,9 +20,11 @@ public class Solution {
 			dp = new int[N][N];
 			for (int i = 0; i < N; i++) {
 				Arrays.fill(dp[i], 10000);
+                dp[i][i] = 0;
 				for (int j = 0; j < N; j++) {
-					dp[i][j] = Integer.parseInt(st.nextToken());
-					if(dp[i][j] == 0) dp[i][j] = 10000;
+					if (Integer.parseInt(st.nextToken()) == 1) {
+                        dp[i][j] = 1;
+                    }
 				}
 			}
 			floidWashall();
@@ -37,9 +39,7 @@ public class Solution {
 	static void floidWashall() {
 		for (int k = 0; k< N;k++) {
 			for (int i= 0; i < N; i++) {
-				if(k==i) continue;
 				for (int j = 0; j < N; j++) {
-					if(j == k || j == i) continue;
 					dp[i][j] = Math.min(dp[i][j], dp[i][k]+dp[k][j]);
 				}
 			}
@@ -53,6 +53,7 @@ public class Solution {
 			for (int j = 0; j < N; j++) {
 				if(i==j) continue;
 				sum+=dp[i][j];
+                if(sum >= min) break;
 			}
 			min = Math.min(min,sum);
 		}
