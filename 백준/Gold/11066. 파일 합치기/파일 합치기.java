@@ -29,19 +29,11 @@ public class Main {
                 for (int j = 1; j <= K-i; j++) {
                     for (int j2 = j; j2 < j+i; j2++) {
                         dp[j][j+i] = Math.min(dp[j][j+i], dp[j][j2]+dp[j2+1][j+i]);
-                    }
-                }
-            }
-      
-            for (int i = 1; i <= K; i++) {
-                for (int j = 1; j <= K-i; j++) {
-                    for (int j2 = j; j2 < j+i; j2++) {
-                    	if(dp2[j][j+i] == 0) dp2[j][j+i] = dp2[j][j2]+dp2[j2+1][j+i]+dp[j][j+i];
+                        if(dp2[j][j+i] == 0) dp2[j][j+i] = dp2[j][j2]+dp2[j2+1][j+i]+dp[j][j+i];
                     	else dp2[j][j+i] = Math.min(dp2[j][j+i], dp2[j][j2]+dp2[j2+1][j+i]+dp[j][j+i]);
                     }
                 }
-            }
-           
+            }   
             min = dp2[1][K];
             sb.append(min+"\n");
         }
