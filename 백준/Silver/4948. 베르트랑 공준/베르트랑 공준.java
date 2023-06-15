@@ -27,7 +27,8 @@ public class Main {
 
     //에라토스테네스의 체
     private static boolean isPrime(int i) {
-        for (int j = 2; j*j <= i; j++) {
+        int sqrt = (int)Math.sqrt(i);
+        for (int j = 2; j <= sqrt; j++) {
             if(i % j == 0) return false;
         }
         return true;
