@@ -14,6 +14,9 @@ public class Main {
 		StringTokenizer st;
 		N = Integer.parseInt(br.readLine());
 		edge = new ArrayList[N+1];
+        for(int i = 1; i <= N; i++){
+            edge[i] = new ArrayList<>();
+        }
 		infected = new boolean[N+1];
 		M = Integer.parseInt(br.readLine());
 		int s, e;
@@ -21,8 +24,6 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			s = Integer.parseInt(st.nextToken());
 			e = Integer.parseInt(st.nextToken());
-			if(edge[s] == null) edge[s] = new ArrayList<>();
-			if(edge[e] == null) edge[e] = new ArrayList<>();
 			edge[s].add(e);
 			edge[e].add(s);
 		}
