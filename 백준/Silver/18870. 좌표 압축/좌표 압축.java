@@ -6,8 +6,8 @@ import java.util.*;
 public class Main {
     static int N;
     static List<Integer> list = new ArrayList<>();
-    static PriorityQueue<Integer> pq = new PriorityQueue<>();
-    static Map<Integer, Integer> map = new HashMap<>(); // 중복 확인용 & 정렬되었을 때 위치 저장용
+    static List<Integer> sorted = new ArrayList<>();
+    static Map<Integer, Integer> map = new HashMap<>(); // 정렬되었을 때 위치 저장용
     static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,16 +17,15 @@ public class Main {
         for (int i = 0; i < N; i++) {
             X = Integer.parseInt(st.nextToken());
             list.add(X); // 순서대로 Xn 저장
-            if(!map.containsKey(X)) {
-                // 중복된 숫자가 아니면
-                map.put(X, 1);
-                pq.offer(X);
-            }
+            sorted.add(X);
         }
         int cnt = 0;
-        while(!pq.isEmpty()){
-            map.put(pq.poll(), cnt++);
+        Collections.sort(sorted);
+        for (int i = 0; i < N; i++) {
+            X = sorted.get(i);
+            if(!map.containsKey(X)) map.put(X, cnt++);
         }
+
         for (int i = 0; i < N; i++) {
             sb.append(map.get(list.get(i)));
             if(i == N-1) continue;
