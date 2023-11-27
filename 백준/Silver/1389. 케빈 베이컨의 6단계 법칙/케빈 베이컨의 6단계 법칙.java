@@ -12,7 +12,8 @@ public class Main {
 		dp = new int[N+1][N+1];
 		int a, b;
 		for (int i = 1; i <= N; i++) {
-			Arrays.fill(dp[i], 1000);
+			Arrays.fill(dp[i], 5001);
+            dp[i][i] = 0;
 		}
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -29,7 +30,7 @@ public class Main {
 				}
 			}
 		}
-		int min = 1000;
+        int min = Integer.MAX_VALUE;
 		int sum = 0;
 		int idx = 0;
 		for (int i = 1; i <= N; i++) {
