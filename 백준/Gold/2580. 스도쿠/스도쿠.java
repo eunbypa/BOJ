@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int[][] sudoku;
+    static int[][][] arr;
     static List<int[]> list;
     static boolean find;
     static StringBuilder sb = new StringBuilder();
@@ -14,6 +15,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sudoku = new int[9][9];
+        arr = new int[3][9][10]; // 0 : 행, 1 : 열, 2 : 3*3
         list = new ArrayList<>();
         StringTokenizer st;
         for (int i = 0; i < 9; i++) {
@@ -21,6 +23,11 @@ public class Main {
             for (int j = 0; j < 9; j++) {
                 sudoku[i][j] = Integer.parseInt(st.nextToken());
                 if(sudoku[i][j] == 0) list.add(new int[]{i, j});
+                else {
+                    arr[0][i][sudoku[i][j]] = 1;
+                    arr[1][j][sudoku[i][j]] = 1;
+                    arr[2][(i/3)*3 + (j/3)][sudoku[i][j]] = 1;
+                }
             }
         }
         dfs(0);
@@ -46,37 +53,24 @@ public class Main {
         int[] cur = list.get(cnt);
         for (int i = 1; i <= 9; i++) {
             sudoku[cur[0]][cur[1]] = i;
-            if(check(cur[0], cur[1])) {
+            arr[0][cur[0]][i]++;
+            arr[1][cur[1]][i]++;
+            arr[2][(cur[0]/3)*3 + (cur[1]/3)][i]++;
+            if(check(cur[0], cur[1], i)) {
                 dfs(cnt+1);
             }
             sudoku[cur[0]][cur[1]] = 0;
+            arr[0][cur[0]][i]--;
+            arr[1][cur[1]][i]--;
+            arr[2][(cur[0]/3)*3 + (cur[1]/3)][i]--;
         }
     }
 
     // 수도쿠 규칙에 맞는 숫자인지 확인
-    private static boolean check(int r, int c) {
-        int[] arr = new int[10];
+    private static boolean check(int r, int c, int n) {
         // 행 검사
-        for (int i = 0; i < 9; i++) {
-            arr[sudoku[r][i]]++;
-            if(sudoku[r][i] != 0 && arr[sudoku[r][i]] == 2) return false;
-        }
         // 열 검사
-        arr = new int[10];
-        for (int i = 0; i < 9; i++) {
-            arr[sudoku[i][c]]++;
-            if(sudoku[i][c] != 0 && arr[sudoku[i][c]] == 2) return false;
-        }
         // 3*3 검사
-        arr = new int[10];
-        int sr = (r / 3) * 3;
-        int sc = (c / 3) * 3;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                arr[sudoku[sr+i][sc+j]]++;
-                if(sudoku[sr+i][sc+j] != 0 && arr[sudoku[sr+i][sc+j]] == 2) return false;
-            }
-        }
-        return true;
+        return arr[0][r][n] == 1 && arr[1][c][n] == 1 && arr[2][(r/3)*3 + (c/3)][n] == 1;
     }
 }
