@@ -1,74 +1,52 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-
     static int N;
-    static int[] sequence;
-    static boolean[] visited;
-
-    public static void main(String[] args) throws Exception {
+    static int[] arr;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         N = Integer.parseInt(br.readLine());
-        sequence = new int[N + 1];
-        visited = new boolean[N + 1];
+        arr = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
-            sequence[i] = Integer.parseInt(st.nextToken());
-            visited[sequence[i]] = true;
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-
-        StringBuilder sb = new StringBuilder();
-        if (getNextSequence()){
-            for (int i = 1; i <= N; i++) {
-                sb.append(sequence[i]).append(" ");
+        if(nextPerm()) {
+            for (int i = 0; i < N; i++) {
+                sb.append(arr[i]);
+                if(i == N-1) break;
+                sb.append(" ");
             }
-            System.out.println(sb.toString());
-            return;
-        }
-        System.out.println(-1);
+        } else sb.append(-1);
+        System.out.println(sb.toString());
     }
 
-    static boolean getNextSequence() {
-
-        boolean flag = false;
-
-        for (int i = N; i >= 2; i--) {
-            visited[sequence[i]] = false;
-            if (sequence[i] > sequence[i - 1]) {
-                visited[sequence[i - 1]] = false;
-                sequence[i - 1]++;
-                for (int j = sequence[i - 1]; j <= N; j++) {
-                    if (visited[j]){
-                        continue;
-                    }
-                    sequence[i - 1] = j;
-                    break;
-                }
-                if (sequence[i - 1] > N){
-                    return false;
-                }
-                visited[sequence[i - 1]] = true;
-                makeNextSequence(i);
-                flag = true;
-                break;
-            }
+    public static boolean nextPerm() {
+        int i = N-1;
+        int j = N-1;
+        while(i > 0 && arr[i-1] > arr[i]) i--;
+        if(i == 0) return false;
+        while(arr[i-1] > arr[j]) j--;
+        swap(i-1, j);
+        j = N-1;
+        while(i < j) {
+            swap(i, j);
+            i++;
+            j--;
         }
 
-        return flag;
+        return true;
     }
 
-    static void makeNextSequence(int idx) {
-        for (int i = 1; i <= N; i++){
-            if (visited[i]){
-                continue;
-            }
-            sequence[idx++] = i;
-            if (idx > N){
-                break;
-            }
-        }
+    public static void swap(int i, int j){
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
+
+
 }
