@@ -1,11 +1,25 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
+
+    static final int APB_SIZE = 26;
+
+    static final char LOWER_A = 'a';
+
+    static final char ROOT = ' ';
+
+    static class Alphabet {
+        char apb;
+        Alphabet[] childs;
+
+        public Alphabet(char apb) {
+            this.apb = apb;
+            childs = new Alphabet[26];
+        }
+    }
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,17 +31,34 @@ public class Main {
         String[] S = readStringAsArr(br, N);
         String[] testStringArr = readStringAsArr(br, M);
 
-        System.out.println(getAnswer(S, testStringArr, M));
+        System.out.println(getAnswer(S, testStringArr));
     }
 
     // 검사 결과 반환
-    static int getAnswer(String[] S, String[] testArr, int l) {
-        Map<String, Integer> prefixMap = getPrefixMap(S);
+    static int getAnswer(String[] S, String[] testArr) {
+        Alphabet apbTrie = getAPBTrie(S, S.length);
         int cnt = 0;
+        int l = testArr.length;
         for (int i = 0; i < l; i++) {
-            if(prefixMap.containsKey(testArr[i])) cnt++;
+            if(findString(apbTrie, testArr[i]))
+                cnt++;
         }
         return cnt;
+    }
+
+    static boolean findString(Alphabet root, String s) {
+        Alphabet cur = root;
+        int l = s.length();
+        int curIdx;
+        for (int i = 0; i < l; i++) {
+            curIdx = s.charAt(i) - LOWER_A;
+            cur = cur.childs[curIdx];
+            // 트라이 구조 내 접두사 일치하는 문자열 없음
+            if(cur == null)
+                return false;
+        }
+
+        return true;
     }
 
     // 읽은 문자열 배열 반환
@@ -39,21 +70,23 @@ public class Main {
         return arr;
     }
 
-    // S에 포함된 모든 접두사를 구해서 해시맵에 저장
-    static Map<String, Integer> getPrefixMap(String[] arr) {
-        Map<String, Integer> prefixMap = new HashMap<>();
-        int l = arr.length, sl;
-        StringBuilder sb = new StringBuilder();
+    // 트라이 구조 배열 반환
+    static Alphabet getAPBTrie(String[] arr, int l) {
+        Alphabet root = new Alphabet(ROOT);
+        Alphabet cur = root;
+        int sl, curIdx;
         for (int i = 0; i < l; i++) {
             sl = arr[i].length();
+            cur = root;
             for (int j = 0; j < sl; j++) {
-                sb.append(arr[i].charAt(j));
-                prefixMap.put(sb.toString(), 1);
+                curIdx = arr[i].charAt(j) - LOWER_A;
+                if(cur.childs[curIdx] == null) {
+                    cur.childs[curIdx] = new Alphabet((char) (LOWER_A + curIdx));
+                }
+                cur = cur.childs[curIdx];
             }
-            sb.delete(0, sl);
         }
-
-        return prefixMap;
+        return root;
     }
 
 
