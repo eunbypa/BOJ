@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -33,6 +32,9 @@ public class Main {
             }
         }
 
+        if(k % m == 0) {
+            return (k==0) ? dp[n-1][m-1] : dp[k/m-1][m-1];
+        }
         return (k==0) ? dp[n-1][m-1] : dp[k/m][k%m-1] * dp[n-k/m-1][m-k%m];
     }
 
